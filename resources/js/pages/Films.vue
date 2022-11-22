@@ -12,10 +12,8 @@ export default {
         }
     },
     methods: {
-        fetchPost() {
-            axios.get('https://www.omdbapi.com/?apikey=bd966b35&t=blade',{
-                mode: "no-cors"
-            })
+        fetchFilm() {
+            axios.get('https://www.omdbapi.com/?apikey=bd966b35&t=blade')
 
             .then(res => {
                     console.log(res);
@@ -25,7 +23,7 @@ export default {
         }
     },
     beforeMount() {
-        this.fetchPost();
+        this.fetchFilm();
     }
 }
 </script>

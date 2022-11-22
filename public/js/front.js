@@ -1926,10 +1926,8 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   methods: {
-    fetchPost: function fetchPost() {
-      axios.get('https://www.omdbapi.com/?apikey=bd966b35&t=blade', {
-        mode: "no-cors"
-      }).then(function (res) {
+    fetchFilm: function fetchFilm() {
+      axios.get('https://www.omdbapi.com/?apikey=bd966b35&t=blade').then(function (res) {
         console.log(res);
       })["catch"](function (err) {
         console.log('BOH2');
@@ -1937,7 +1935,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   beforeMount: function beforeMount() {
-    this.fetchPost();
+    this.fetchFilm();
   }
 });
 
