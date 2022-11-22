@@ -1,0 +1,58 @@
+@import './variables';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #FFF;
+    background-color: $dark;
+    color: #cecece;
+}
+
+.my_shadow-sm {
+    box-shadow: 0 0 0.25rem rgb(255, 255, 255);
+}
+
+.bg-black {
+    background-color: #000 !important;
+}
+
+.navbar.bg-black * {
+    background-color: #000 !important;
+}
+
+.fw_bold {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.fw_bold:hover {
+    color: $cyan !important;
+}
+
+a {
+    text-decoration: none;
+    color: currentColor !important;
+}
+
+.badge.fs-1 {
+    font-size: 1rem;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+
+    h5 {
+        font-size: 1.5rem;
+        font-style: italic;
+    }
+
+    a.card-link {
+        color: #3490dc !important;
+
+        &.card-link:hover {
+            text-decoration: underline;
+        }
+    }
+}

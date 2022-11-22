@@ -1,0 +1,20 @@
+<template>
+    <div class="min-h-screen">
+        <Nav />
+        <router-view></router-view>
+    </div>
+</template>
+
+<script>
+import Nav from '../pages/Nav.vue'
+
+export default {
+    components: {
+        Nav
+    }
+}
+</script>
+
+<style>
+
+</style>
