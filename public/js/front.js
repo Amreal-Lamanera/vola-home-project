@@ -1923,13 +1923,13 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
-      // title: 'HOME PAGE',
-    };
+    return {};
   },
   methods: {
     fetchPost: function fetchPost() {
-      axios.get("http://www.omdbapi.com/?apikey=bd966b35&t=signore&r=xml").then(function (res) {
+      axios.get('https://www.omdbapi.com/?apikey=bd966b35&t=blade', {
+        mode: "no-cors"
+      }).then(function (res) {
         console.log(res);
       })["catch"](function (err) {
         console.log('BOH2');

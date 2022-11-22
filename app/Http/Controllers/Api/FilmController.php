@@ -15,7 +15,7 @@ class FilmController extends Controller
      */
     public function index()
     {
-        $response = Http::get('http://www.omdbapi.com/?apikey=bd966b35&t=signore');
+        $response = Http::get('http://www.omdbapi.com/?apikey=bd966b35&t=blade');
         $success = true;
         $jsonData = $response->json();
 
