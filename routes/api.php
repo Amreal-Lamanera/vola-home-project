@@ -19,3 +19,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::resource('films', 'Api\FilmController')->only('index', 'show');
+Route::get('films/id/{id}', 'Api\FilmController@showId')->name('films.show.id');

@@ -5,23 +5,24 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 class FilmController extends Controller
 {
+    private $apiKey = 'bd966b35';
+    private $baseUrl = 'http://www.omdbapi.com/?';
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $response = Http::get('http://www.omdbapi.com/?apikey=bd966b35&t=blade');
-        $success = true;
-        $jsonData = $response->json();
-
-        dd($jsonData);
-
-        return response()->json(compact('response', 'success'));
+        // $response = Http::get('http://www.omdbapi.com/?apikey=bd966b35&t=blade');
+        // $jsonData = $response->json();
+        // $success = true;
+        $json = json_decode(file_get_contents('http://www.omdbapi.com/?apikey=bd966b35'), true);
+        return response()->json(compact('json'));
     }
 
     /**
@@ -38,12 +39,21 @@ class FilmController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param $title
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($title)
     {
-        //
+        $string = "{$this->baseUrl}apikey={$this->apiKey}&s={$title}";
+        $json = json_decode(file_get_contents($string), true);
+        return response()->json(compact('json'));
+    }
+
+    public function showId($id)
+    {
+        $string = "{$this->baseUrl}apikey={$this->apiKey}&i={$id}";
+        $json = json_decode(file_get_contents($string), true);
+        return response()->json(compact('json'));
     }
 
     /**

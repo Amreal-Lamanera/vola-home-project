@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen">
         <Nav />
-        <router-view></router-view>
+            <router-view></router-view>
     </div>
 </template>
 

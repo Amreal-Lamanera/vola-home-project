@@ -1923,19 +1923,58 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      queryTitle: '',
+      queryId: '',
+      invalidInput: false,
+      invalidMsg: '',
+      films: null
+    };
   },
   methods: {
-    fetchFilm: function fetchFilm() {
-      axios.get('https://www.omdbapi.com/?apikey=bd966b35&t=blade').then(function (res) {
-        console.log(res);
-      })["catch"](function (err) {
-        console.log('BOH2');
-      });
+    fetchFilm: function fetchFilm(bool) {
+      var _this = this;
+      var par;
+      if (bool) {
+        if (this.queryId.trim() === '') {
+          this.invalidInput = true;
+          this.invalidMsg = 'Input id vuoto!';
+          return;
+        }
+        par = this.queryId;
+        axios.get("/api/films/id/".concat(par)).then(function (res) {
+          if (res.data.json.Response === "False") {
+            _this.invalidInput = true;
+            _this.invalidMsg = 'Id non valido!';
+            return;
+          }
+          _this.films = res.data.json.Search;
+          // console.log(res);
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      } else {
+        if (this.queryTitle.trim() === '') {
+          this.invalidInput = true;
+          this.invalidMsg = 'Input titolo vuoto!';
+          return;
+        }
+        par = this.queryTitle;
+        axios.get("/api/films/".concat(par)).then(function (res) {
+          if (res.data.json.Response === "False") {
+            _this.invalidInput = true;
+            _this.invalidMsg = 'Film non trovato!';
+            return;
+          }
+          _this.films = res.data.json.Search;
+          console.log(_this.films);
+          // console.log(res);
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
+      this.invalidInput = false;
     }
-  },
-  beforeMount: function beforeMount() {
-    this.fetchFilm();
   }
 });
 
@@ -2043,13 +2082,124 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _vm._m(0);
+  return _c("main", {
+    staticClass: "p-6"
+  }, [_c("section", [_c("div", {
+    staticClass: "container"
+  }, [_c("div", {
+    staticClass: "flex pb-6 justify-end gap-4 items-center"
+  }, [_c("label", {
+    staticClass: "mb-0",
+    attrs: {
+      "for": "title"
+    }
+  }, [_vm._v("Ricerca per titolo:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.queryTitle,
+      expression: "queryTitle"
+    }],
+    ref: "searchBar",
+    staticClass: "focus-visible:outline-none rounded-sm border-2",
+    "class": _vm.invalidInput ? "border-rose-500" : "",
+    attrs: {
+      name: "title",
+      type: "text",
+      placeholder: "Cerca per titolo..."
+    },
+    domProps: {
+      value: _vm.queryTitle
+    },
+    on: {
+      keyup: function keyup($event) {
+        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
+        return _vm.fetchFilm(0);
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.queryTitle = $event.target.value;
+      }
+    }
+  }), _vm._v(" "), _c("button", {
+    staticClass: "rounded-md bg-white p-1 text-black",
+    on: {
+      click: function click($event) {
+        return _vm.fetchFilm(0);
+      }
+    }
+  }, [_vm._v("Cerca")])]), _vm._v(" "), _c("div", {
+    staticClass: "flex justify-end gap-4 items-center pb-6"
+  }, [_c("label", {
+    staticClass: "mb-0",
+    attrs: {
+      "for": "id"
+    }
+  }, [_vm._v("Ricerca per id:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.queryId,
+      expression: "queryId"
+    }],
+    ref: "searchBar",
+    staticClass: "focus-visible:outline-none rounded-sm border-2",
+    "class": _vm.invalidInput ? "border-rose-500" : "",
+    attrs: {
+      name: "id",
+      type: "text",
+      placeholder: "Cerca per id..."
+    },
+    domProps: {
+      value: _vm.queryId
+    },
+    on: {
+      keyup: function keyup($event) {
+        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
+        return _vm.fetchFilm(1);
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.queryId = $event.target.value;
+      }
+    }
+  }), _vm._v(" "), _c("button", {
+    staticClass: "rounded-md bg-white p-1 text-black",
+    on: {
+      click: function click($event) {
+        return _vm.fetchFilm(1);
+      }
+    }
+  }, [_vm._v("Cerca")])]), _vm._v(" "), _vm.invalidInput ? _c("div", {
+    staticClass: "flex justify-end"
+  }, [_vm._v("\n                " + _vm._s(_vm.invalidMsg) + "\n            ")]) : _vm._e()])]), _vm._v(" "), _vm.films ? _c("section", [_c("div", {
+    staticClass: "container"
+  }, [_c("div", {
+    staticClass: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+  }, _vm._l(_vm.films, function (film, i) {
+    return _c("div", {
+      key: i,
+      staticClass: "card"
+    }, [_c("img", {
+      staticClass: "object-cover h-96",
+      attrs: {
+        src: film.Poster,
+        alt: film.Title
+      }
+    }), _vm._v(" "), _c("div", {
+      staticClass: "desc flex flex-col gap-3 p-3 bg-white"
+    }, [_c("span", {
+      staticClass: "bg-white text-black"
+    }, [_vm._v("\n                            Titolo: " + _vm._s(film.Title) + "\n                        ")]), _vm._v(" "), _c("span", {
+      staticClass: "bg-white text-black"
+    }, [_vm._v("\n                            Tipo: " + _vm._s(film.Type) + "\n                        ")]), _vm._v(" "), _c("span", {
+      staticClass: "bg-white text-black"
+    }, [_vm._v("\n                            Anno: " + _vm._s(film.Year) + "\n                        ")]), _vm._v(" "), _c("span", {
+      staticClass: "bg-white text-black"
+    }, [_vm._v("\n                            imbdID: " + _vm._s(film.imdbID) + "\n                        ")])])]);
+  }), 0)])]) : _vm._e()]);
 };
-var staticRenderFns = [function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", [_c("section")]);
-}];
+var staticRenderFns = [];
 render._withStripped = true;
 
 
