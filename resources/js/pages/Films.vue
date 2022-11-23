@@ -1,23 +1,7 @@
 <template>
     <main class="p-6">
 
-        <section>
-            <div class="container">
-                <div class="flex pb-6 justify-end gap-4 items-center">
-                    <label class="mb-0" for="title">Ricerca per titolo:</label>
-                    <input name="title" type="text" placeholder="Cerca per titolo..." v-model="queryTitle" @keyup.enter="fetchFilm(0)" ref="searchBar" class="focus-visible:outline-none rounded-sm border-2" :class="invalidInput ? 'border-rose-500' : ''">
-                    <button class="rounded-md bg-white p-1 text-black" @click="fetchFilm(0)">Cerca</button>
-                </div>
-                <div class="flex justify-end gap-4 items-center pb-6">
-                    <label class="mb-0" for="id">Ricerca per id:</label>
-                    <input name="id" type="text" placeholder="Cerca per id..." v-model="queryId" @keyup.enter="fetchFilm(1)" ref="searchBar" class="focus-visible:outline-none rounded-sm border-2" :class="invalidInput ? 'border-rose-500' : ''">
-                    <button class="rounded-md bg-white p-1 text-black" @click="fetchFilm(1)">Cerca</button>
-                </div>
-                <div v-if="invalidInput" class="flex justify-end">
-                    {{ invalidMsg }}
-                </div>
-            </div>
-        </section>
+        <SearchSectionVue />
 
         <section v-if="films">
             <div class="container">
@@ -34,7 +18,7 @@
                             <span class="bg-white text-black">
                                 Anno: {{ film.Year }}
                             </span>
-                            <span class="bg-white text-black cursor-pointer text-sky-500 hover:text-sky-800 hover:underline hover:decoration-1" @click="queryId = film.imdbID, fetchId()">
+                            <span class="bg-white text-black cursor-pointer text-sky-500 hover:text-sky-800 hover:underline hover:decoration-1" @click="fetchId(film.imdbID)">
                                 imbdID: {{ film.imdbID }}
                             </span>
                         </div>
@@ -89,71 +73,30 @@
 </template>
 
 <script>
+import SearchSectionVue from "../components/SearchSection"
+import state from '../store'
+
 export default {
+    components: {
+        SearchSectionVue
+    },
     data() {
         return {
-            queryTitle: '',
-            queryId: '',
-            invalidInput: false,
-            invalidMsg: '',
-            films: null,
-            filmId: null,
         }
     },
-    methods: {
-        fetchFilm(bool) {
-            let par;
-            this.films = null;
-            this.filmId = null;
-            if(bool) {
-                if (this.queryId.trim() === ''){
-                    this.invalidInput = true;
-                    this.invalidMsg = 'Input id vuoto!';
-                    return;
-                }
-                par = this.queryId;
-                axios.get(`/api/films/id/${par}`)
-                .then(res => {
-                    if(res.data.json.Response === "False") {
-                        this.invalidInput = true;
-                        this.invalidMsg = 'Id non valido!';
-                        console.log(res);
-                        return;
-                    }
-                        this.filmId = res.data.json;
-                        console.log(res);
-
-                }).catch(err =>{
-                    console.log(err);
-                });
-            }
-            else {
-                if (this.queryTitle.trim() === ''){
-                    this.invalidInput = true;
-                    this.invalidMsg = 'Input titolo vuoto!';
-                    return;
-                }
-                par = this.queryTitle;
-                axios.get(`/api/films/${par}`)
-                .then(res => {
-                    if(res.data.json.Response === "False") {
-                        this.invalidInput = true;
-                        this.invalidMsg = 'Film non trovato!';
-                        return;
-                    }
-                    this.films = res.data.json.Search;
-                    console.log(this.films);
-                    // console.log(res);
-                }).catch(err =>{
-                    console.log(err);
-                });
-            }
-            this.invalidInput = false;
+    computed: {
+        films() {
+            return state.films;
         },
-        fetchId(){
-            this.films = null;
-            this.filmId = null;
-            let par = this.queryId;
+        filmId() {
+            return state.filmId;
+        },
+    },
+    methods: {
+        fetchId(id){
+            state.films = null;
+            state.filmId = null;
+            let par = id;
             axios.get(`/api/films/id/${par}`)
             .then(res => {
                 if(res.data.json.Response === "False") {
@@ -162,14 +105,14 @@ export default {
                     console.log(res);
                     return;
                 }
-                    this.filmId = res.data.json;
+                    state.filmId = res.data.json;
                     console.log(res);
     
             }).catch(err =>{
                 console.log(err);
             });
         },
-    }
+    },
 }
 </script>
 
