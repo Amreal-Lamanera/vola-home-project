@@ -99,14 +99,7 @@ export default {
             let par = id;
             axios.get(`/api/films/id/${par}`)
             .then(res => {
-                if(res.data.json.Response === "False") {
-                    this.invalidInput = true;
-                    this.invalidMsg = 'Id non valido!';
-                    console.log(res);
-                    return;
-                }
                     state.filmId = res.data.json;
-                    console.log(res);
     
             }).catch(err =>{
                 console.log(err);

@@ -72,8 +72,6 @@ export default {
                         return;
                     }
                     state.films = res.data.json.Search;
-                    console.log('state: ', state.films);
-                    // console.log(res);
                 }).catch(err =>{
                     console.log(err);
                 });

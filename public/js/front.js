@@ -1958,8 +1958,6 @@ __webpack_require__.r(__webpack_exports__);
             return;
           }
           _store__WEBPACK_IMPORTED_MODULE_0__["default"].films = res.data.json.Search;
-          console.log('state: ', _store__WEBPACK_IMPORTED_MODULE_0__["default"].films);
-          // console.log(res);
         })["catch"](function (err) {
           console.log(err);
         });
@@ -2014,19 +2012,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     fetchId: function fetchId(id) {
-      var _this = this;
       _store__WEBPACK_IMPORTED_MODULE_1__["default"].films = null;
       _store__WEBPACK_IMPORTED_MODULE_1__["default"].filmId = null;
       var par = id;
       axios.get("/api/films/id/".concat(par)).then(function (res) {
-        if (res.data.json.Response === "False") {
-          _this.invalidInput = true;
-          _this.invalidMsg = 'Id non valido!';
-          console.log(res);
-          return;
-        }
         _store__WEBPACK_IMPORTED_MODULE_1__["default"].filmId = res.data.json;
-        console.log(res);
       })["catch"](function (err) {
         console.log(err);
       });
