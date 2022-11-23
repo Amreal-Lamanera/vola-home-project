@@ -1996,23 +1996,7 @@ __webpack_require__.r(__webpack_exports__);
         text: 'Films',
         path: '/films',
         name: 'films'
-      }
-      // {
-      //     text: 'Chi siamo',
-      //     path: '/chi-siamo',
-      //     name: 'about-us'
-      // },
-      // {
-      //     text: 'Blog',
-      //     path: '/blog',
-      //     name: 'posts.index'
-      // },
-      // {
-      //     text: 'Contatti',
-      //     path: '/contatti',
-      //     name: 'contact-us'
-      // }
-      ]
+      }]
     };
   }
 });
