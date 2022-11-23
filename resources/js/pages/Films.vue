@@ -34,7 +34,7 @@
                             <span class="bg-white text-black">
                                 Anno: {{ film.Year }}
                             </span>
-                            <span class="bg-white text-black">
+                            <span class="bg-white text-black cursor-pointer text-sky-500 hover:text-sky-800 hover:underline hover:decoration-1" @click="queryId = film.imdbID, fetchId()">
                                 imbdID: {{ film.imdbID }}
                             </span>
                         </div>
@@ -42,7 +42,49 @@
                 </div>
             </div>
         </section>
-        
+
+        <section v-if="filmId">
+            <div class="container">
+                <div class="card">
+                    <div class="img-container flex justify-center bg-black">
+                        <img :src="filmId.Poster" :alt="filmId.Title" class="object-cover">
+                    </div>
+                    <div class="desc flex flex-col gap-3 p-3 bg-white">
+                        <span class="bg-white text-black">
+                            Titolo: {{ filmId.Title }}
+                        </span>
+                        <span class="bg-white text-black">
+                            Tipo: {{ filmId.Type }}
+                        </span>
+                        <span class="bg-white text-black">
+                            Anno: {{ filmId.Year }}
+                        </span>
+                        <span class="bg-white text-black">
+                            imbdID: {{ filmId.imdbID }}
+                        </span>
+                        <span class="bg-white text-black">
+                            Attori: {{ filmId.Actors }}
+                        </span>
+                        <span class="bg-white text-black">
+                            Paese: {{ filmId.Country }}
+                        </span>
+                        <span class="bg-white text-black">
+                            Genere: {{ filmId.Genre }}
+                        </span>
+                        <span class="bg-white text-black">
+                            Lingua originale: {{ filmId.Language }}
+                        </span>
+                        <span class="bg-white text-black">
+                            Trama: {{ filmId.Plot }}
+                        </span>
+                        <span class="bg-white text-black">
+                            imdbRating: {{ filmId.imdbRating }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 </template>
 
@@ -54,12 +96,15 @@ export default {
             queryId: '',
             invalidInput: false,
             invalidMsg: '',
-            films: null
+            films: null,
+            filmId: null,
         }
     },
     methods: {
         fetchFilm(bool) {
             let par;
+            this.films = null;
+            this.filmId = null;
             if(bool) {
                 if (this.queryId.trim() === ''){
                     this.invalidInput = true;
@@ -72,10 +117,11 @@ export default {
                     if(res.data.json.Response === "False") {
                         this.invalidInput = true;
                         this.invalidMsg = 'Id non valido!';
+                        console.log(res);
                         return;
                     }
-                        this.films = res.data.json.Search;
-                        // console.log(res);
+                        this.filmId = res.data.json;
+                        console.log(res);
 
                 }).catch(err =>{
                     console.log(err);
@@ -103,8 +149,27 @@ export default {
                 });
             }
             this.invalidInput = false;
-        }
-    },
+        },
+        fetchId(){
+            this.films = null;
+            this.filmId = null;
+            let par = this.queryId;
+            axios.get(`/api/films/id/${par}`)
+            .then(res => {
+                if(res.data.json.Response === "False") {
+                    this.invalidInput = true;
+                    this.invalidMsg = 'Id non valido!';
+                    console.log(res);
+                    return;
+                }
+                    this.filmId = res.data.json;
+                    console.log(res);
+    
+            }).catch(err =>{
+                console.log(err);
+            });
+        },
+    }
 }
 </script>
 

@@ -1928,13 +1928,16 @@ __webpack_require__.r(__webpack_exports__);
       queryId: '',
       invalidInput: false,
       invalidMsg: '',
-      films: null
+      films: null,
+      filmId: null
     };
   },
   methods: {
     fetchFilm: function fetchFilm(bool) {
       var _this = this;
       var par;
+      this.films = null;
+      this.filmId = null;
       if (bool) {
         if (this.queryId.trim() === '') {
           this.invalidInput = true;
@@ -1946,10 +1949,11 @@ __webpack_require__.r(__webpack_exports__);
           if (res.data.json.Response === "False") {
             _this.invalidInput = true;
             _this.invalidMsg = 'Id non valido!';
+            console.log(res);
             return;
           }
-          _this.films = res.data.json.Search;
-          // console.log(res);
+          _this.filmId = res.data.json;
+          console.log(res);
         })["catch"](function (err) {
           console.log(err);
         });
@@ -1974,6 +1978,24 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
       this.invalidInput = false;
+    },
+    fetchId: function fetchId() {
+      var _this2 = this;
+      this.films = null;
+      this.filmId = null;
+      var par = this.queryId;
+      axios.get("/api/films/id/".concat(par)).then(function (res) {
+        if (res.data.json.Response === "False") {
+          _this2.invalidInput = true;
+          _this2.invalidMsg = 'Id non valido!';
+          console.log(res);
+          return;
+        }
+        _this2.filmId = res.data.json;
+        console.log(res);
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   }
 });
@@ -2179,9 +2201,49 @@ var render = function render() {
     }, [_vm._v("\n                            Tipo: " + _vm._s(film.Type) + "\n                        ")]), _vm._v(" "), _c("span", {
       staticClass: "bg-white text-black"
     }, [_vm._v("\n                            Anno: " + _vm._s(film.Year) + "\n                        ")]), _vm._v(" "), _c("span", {
-      staticClass: "bg-white text-black"
+      staticClass: "bg-white text-black cursor-pointer text-sky-500 hover:text-sky-800 hover:underline hover:decoration-1",
+      on: {
+        click: function click($event) {
+          ;
+          _vm.queryId = film.imdbID, _vm.fetchId();
+        }
+      }
     }, [_vm._v("\n                            imbdID: " + _vm._s(film.imdbID) + "\n                        ")])])]);
-  }), 0)])]) : _vm._e()]);
+  }), 0)])]) : _vm._e(), _vm._v(" "), _vm.filmId ? _c("section", [_c("div", {
+    staticClass: "container"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "img-container flex justify-center bg-black"
+  }, [_c("img", {
+    staticClass: "object-cover",
+    attrs: {
+      src: _vm.filmId.Poster,
+      alt: _vm.filmId.Title
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "desc flex flex-col gap-3 p-3 bg-white"
+  }, [_c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Titolo: " + _vm._s(_vm.filmId.Title) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Tipo: " + _vm._s(_vm.filmId.Type) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Anno: " + _vm._s(_vm.filmId.Year) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        imbdID: " + _vm._s(_vm.filmId.imdbID) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Attori: " + _vm._s(_vm.filmId.Actors) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Paese: " + _vm._s(_vm.filmId.Country) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Genere: " + _vm._s(_vm.filmId.Genre) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Lingua originale: " + _vm._s(_vm.filmId.Language) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        Trama: " + _vm._s(_vm.filmId.Plot) + "\n                    ")]), _vm._v(" "), _c("span", {
+    staticClass: "bg-white text-black"
+  }, [_vm._v("\n                        imdbRating: " + _vm._s(_vm.filmId.imdbRating) + "\n                    ")])])])])]) : _vm._e()]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
