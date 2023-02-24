@@ -1,3 +1,16 @@
+# Vola Home Project
+### Starting from the API available on the website: http://www.omdbapi.com/
+Realize a web application which, after an initial authentication, let the
+user to use the searching functionalities given by the API.
+The Front End side has to send requests to the Back End side. The latter
+will perform the call to the OMDB API.
+Bonus Point: use the Vue.js and Laravel Frameworks.
+API to use
+-  Search by Title: shows the list of the movies associated to such title;
+-  Search by ID: shows the detail of the movie associated to such ID.
+This result is the same of the Search by Title API and then clicking on
+the result.
+
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">
